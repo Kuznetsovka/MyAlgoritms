@@ -12,14 +12,12 @@ public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
     @Override // O(1)
     public E removeRight() {
         if (isEmpty()) {
-            return null;
+            return  null;
         }
-        if (isFull()) {
-            tail=size-1;
-        }
-        E removedValue = data[tail--];
+        if (tail == DEFAULT_TAIL)
+            tail = data.length - 1;
         size--;
-        return removedValue;
+        return data[tail--];
     }
 
     @Override
@@ -27,8 +25,8 @@ public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
         if (isFull()) {
             return false;
         }
-        if (head==0)
-            head=DEFAULT_HEAD+1;
+        if (head == DEFAULT_HEAD)
+            head = data.length;
         data[--head] = value;
         size++;
         return true;
