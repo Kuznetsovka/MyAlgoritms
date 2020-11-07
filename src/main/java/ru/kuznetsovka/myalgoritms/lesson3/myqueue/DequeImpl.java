@@ -1,12 +1,18 @@
 package ru.kuznetsovka.myalgoritms.lesson3.myqueue;
 
-import ru.kuznetsovka.myalgoritms.lesson4.LinkedList;
-
-import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Iterator;
 
-public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
+public class DequeImpl<E> extends QueueImpl<E> implements Deque<E>,Iterable<E> {
     private int maxSize;
+
+    @Override
+    public String toString() {
+
+        return "{" +
+                "data=" + Arrays.toString (data) +
+                '}';
+    }
 
     public DequeImpl(int maxSize) {
         super (maxSize);
@@ -43,4 +49,34 @@ public class DequeImpl<E> extends QueueImpl<E> implements Deque<E> {
         return data[tail];
     }
 
+    @Override
+    public Iterator<E> iterator() {
+        Iterator<E> it = new Iterator<E>() {
+            int count = 0;
+            private int currectIndex = head;
+
+            @Override
+            public boolean hasNext() {
+                return count+1 < size;
+            }
+
+            @Override
+            public E next() {
+                if (currectIndex>=size) {
+                    currectIndex=0;
+                    count++;
+                    return data[currectIndex];
+                }
+                currectIndex++;
+                count++;
+                return data[currectIndex];
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+        return it;
+    }
 }

@@ -3,15 +3,15 @@ package ru.kuznetsovka.myalgoritms.lesson5;
 import ru.kuznetsovka.myalgoritms.lesson3.myqueue.Deque;
 import ru.kuznetsovka.myalgoritms.lesson3.myqueue.DequeImpl;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 
 public class Bag {
     protected int capacity;
     //TODO Поменять на TwoSideLinkedList
+    protected Map<Integer,String>  optimum = new TreeMap<> ();
     protected ArrayList<Integer> optimumWeight = new ArrayList<> ();
-    protected ArrayList<Deque<Item>> optimumList =  new ArrayList<> ();
+    protected ArrayList<String> optimumList =  new ArrayList<> ();
 
     public Bag(int capacity) {
         this.capacity = capacity;
@@ -25,15 +25,21 @@ public class Bag {
             dequeList.insertRight (item);
         }
         getAnagrammSum(dequeList);
-
-        for (int i = 0; i < optimumWeight.size (); i++) {
-            if (optimumWeight.get(i)>capacity) {
-                if (i==0)
-                    System.out.println (optimumWeight.get(i));
+        int count=0;
+        String tempList = null;
+        Integer tempWeight=0;
+        for(Map.Entry<Integer,String> entry : optimum.entrySet()) {
+            Integer weight = entry.getKey();
+            if (weight>capacity) {
+                if (count==0)
+                    System.out.println ("Ни один элемент не помещается в рюкзак");
                 else
-                    System.out.println (optimumWeight.get(i-1));
+                    System.out.println ("Оптимальный список: " + tempList + " оптимальный вес: " + tempWeight);
                 return;
             }
+            count++;
+            tempList = entry.getValue();
+            tempWeight = entry.getKey ();
         }
 
     }
@@ -42,18 +48,21 @@ public class Bag {
         if (list.size ()==0) return;
         saveResult(list);
         change(list);
-        list.removeLeft ();
+        list.removeRight ();
         getAnagrammSum(list);
     }
 
     private void saveResult(Deque<Item>list) {
         int weight = 0;
+        String temp = "";
         //TODO Сделать итератор для TwoSideLinkedList
         for (Item item : list) {
             weight += item.getWeight ();
+            temp+=item + ",";
         }
+        optimum.put (weight,temp);
         optimumWeight.add(weight);
-        optimumList.add(list);
+        optimumList.add(temp);
     }
 
     public void change(Deque<Item> list){
