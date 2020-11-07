@@ -52,13 +52,14 @@ public class Bag {
 
     private void saveResult(Deque<Item>list) {
         int weight = 0;
-        String temp = "";
+        StringBuilder temp = null;
         //TODO Сделать итератор для TwoSideLinkedList
         for (Item item : list) {
             weight += item.getWeight ();
-            temp+=item + ",";
+            temp.append (item);
+            temp.append (",");
         }
-        optimum.put (weight,temp);
+        optimum.put (weight, String.valueOf (temp));
     }
 
     public void change(Deque<Item> list){
