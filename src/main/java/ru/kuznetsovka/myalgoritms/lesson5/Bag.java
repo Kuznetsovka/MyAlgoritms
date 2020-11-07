@@ -10,8 +10,6 @@ public class Bag {
     protected int capacity;
     //TODO Поменять на TwoSideLinkedList
     protected Map<Integer,String>  optimum = new TreeMap<> ();
-    protected ArrayList<Integer> optimumWeight = new ArrayList<> ();
-    protected ArrayList<String> optimumList =  new ArrayList<> ();
 
     public Bag(int capacity) {
         this.capacity = capacity;
@@ -61,8 +59,6 @@ public class Bag {
             temp+=item + ",";
         }
         optimum.put (weight,temp);
-        optimumWeight.add(weight);
-        optimumList.add(temp);
     }
 
     public void change(Deque<Item> list){
