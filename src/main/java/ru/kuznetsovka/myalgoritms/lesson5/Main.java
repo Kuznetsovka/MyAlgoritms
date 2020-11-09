@@ -1,8 +1,5 @@
 package ru.kuznetsovka.myalgoritms.lesson5;
 
-import ru.kuznetsovka.myalgoritms.lesson3.myqueue.Deque;
-import ru.kuznetsovka.myalgoritms.lesson3.myqueue.DequeImpl;
-
 import java.util.ArrayList;
 
 public class Main {

@@ -8,7 +8,6 @@ import java.util.*;
 
 public class Bag {
     protected int capacity;
-    //TODO Поменять на TwoSideLinkedList
     protected Map<Integer,String>  optimum = new TreeMap<> ();
 
     public Bag(int capacity) {
@@ -22,10 +21,15 @@ public class Bag {
         for (Item item : list) {
             dequeList.insertRight (item);
         }
-        getAnagrammSum(dequeList);
+        saveOneItemResult(dequeList);
+        searchSum(dequeList);
+        showResult ();
+    }
+
+    private void showResult() {
         int count=0;
         String tempList = null;
-        Integer tempWeight=0;
+        int tempWeight=0;
         for(Map.Entry<Integer,String> entry : optimum.entrySet()) {
             Integer weight = entry.getKey();
             if (weight>capacity) {
@@ -39,21 +43,25 @@ public class Bag {
             tempList = entry.getValue();
             tempWeight = entry.getKey ();
         }
-
     }
 
-    public void getAnagrammSum(Deque<Item> list){
-        if (list.size ()==0) return;
+    public void searchSum(Deque<Item> list){
+        if (list.size ()==1) return;
         saveResult(list);
         change(list);
         list.removeRight ();
-        getAnagrammSum(list);
+        searchSum(list);
+    }
+
+    private void saveOneItemResult(Deque<Item> list) {
+        for (Item item : list) {
+            optimum.put (item.getWeight (), String.valueOf (item));
+        }
     }
 
     private void saveResult(Deque<Item>list) {
         int weight = 0;
-        StringBuilder temp = null;
-        //TODO Сделать итератор для TwoSideLinkedList
+        StringBuilder temp = new StringBuilder();
         for (Item item : list) {
             weight += item.getWeight ();
             temp.append (item);
@@ -63,7 +71,6 @@ public class Bag {
     }
 
     public void change(Deque<Item> list){
-        //TODO Сделать итератор для TwoSideLinkedList
         for (Item item : list) {
             Item temp = list.removeLeft ();
             saveResult(list);
