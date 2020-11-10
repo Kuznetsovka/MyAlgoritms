@@ -1,80 +1,79 @@
 package ru.kuznetsovka.myalgoritms.lesson5;
 
-import ru.kuznetsovka.myalgoritms.lesson3.myqueue.Deque;
-import ru.kuznetsovka.myalgoritms.lesson3.myqueue.DequeImpl;
+import ru.kuznetsovka.myalgoritms.lesson4.SimpleLinkedListImpl;
+import ru.kuznetsovka.myalgoritms.lesson4.TwoSideLinkedListImpl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Bag {
     protected int capacity;
-    protected Map<Integer,String>  optimum = new TreeMap<> ();
+    protected Map<Integer,ArrayList<Item>>  optimum = new HashMap<> ();
 
     public Bag(int capacity) {
         this.capacity = capacity;
     }
 
     public void pack(ArrayList<Item> list){
-        Collections.sort(list);
-        Collections.reverse (list);
-        Deque<Item> dequeList = new DequeImpl<> (list.size ());
+        TwoSideLinkedListImpl<Item> linkedList = new TwoSideLinkedListImpl<> ();
         for (Item item : list) {
-            dequeList.insertRight (item);
+            linkedList.insertLast (item);
         }
-        saveOneItemResult(dequeList);
-        searchSum(dequeList);
+        saveOneItemResult(linkedList);
+        saveResult(linkedList);
+        searchSum(linkedList);
+        optimum = optimum.entrySet().stream()
+                .sorted(Map.Entry.<Integer,ArrayList<Item>>comparingByKey().reversed()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue, LinkedHashMap::new));
         showResult ();
     }
 
     private void showResult() {
-        int count=0;
-        String tempList = null;
-        int tempWeight=0;
-        for(Map.Entry<Integer,String> entry : optimum.entrySet()) {
-            Integer weight = entry.getKey();
-            if (weight>capacity) {
-                if (count==0)
-                    System.out.println ("Ни один элемент не помещается в рюкзак");
-                else
-                    System.out.println ("Оптимальный список: " + tempList + " оптимальный вес: " + tempWeight);
+        for(Map.Entry<Integer, ArrayList<Item>> entry : optimum.entrySet()) {
+            Integer weight = entry.getValue().stream().mapToInt(Item::getWeight).sum();
+            if (weight<=capacity) {
+                System.out.println ("Оптимальный список: " + entry.getValue() + " оптимальный вес: " + weight + " стоимость: " + entry.getKey ());
                 return;
             }
-            count++;
-            tempList = entry.getValue();
-            tempWeight = entry.getKey ();
         }
+        System.out.println ("Ни один элемент не помещается в рюкзак");
     }
 
-    public void searchSum(Deque<Item> list){
+    public void searchSum(TwoSideLinkedListImpl<Item> list){
         if (list.size ()==1) return;
-        saveResult(list);
-        change(list);
-        list.removeRight ();
-        searchSum(list);
-    }
-
-    private void saveOneItemResult(Deque<Item> list) {
-        for (Item item : list) {
-            optimum.put (item.getWeight (), String.valueOf (item));
+        for (int i = 0; i < list.size(); i++) {
+            Item temp = list.removeFirst ();
+            searchSum(list);
+            saveResult (list);
+            change(list);
+            list.insertLast (temp);
         }
     }
 
-    private void saveResult(Deque<Item>list) {
-        int weight = 0;
-        StringBuilder temp = new StringBuilder();
+    private void saveOneItemResult(TwoSideLinkedListImpl<Item> list) {
         for (Item item : list) {
-            weight += item.getWeight ();
-            temp.append (item);
-            temp.append (",");
+            ArrayList arr = new ArrayList<Item>();
+            arr.add(item);
+            optimum.put (item.getCost (),arr);
         }
-        optimum.put (weight, String.valueOf (temp));
     }
 
-    public void change(Deque<Item> list){
+    private void saveResult(TwoSideLinkedListImpl<Item>list) {
+        int cost = 0;
+        ArrayList arr = new ArrayList<Item> ();
         for (Item item : list) {
-            Item temp = list.removeLeft ();
+            cost += item.getCost ();
+            arr.add (item);
+        }
+        optimum.put (cost, arr);
+    }
+
+    public void change(TwoSideLinkedListImpl<Item> list){
+        for (int i = 0; i < list.size(); i++) {
+            Item temp = list.removeFirst ();
             saveResult(list);
-            list.insertRight (temp);
+            list.insertLast(temp);
         }
     }
 }

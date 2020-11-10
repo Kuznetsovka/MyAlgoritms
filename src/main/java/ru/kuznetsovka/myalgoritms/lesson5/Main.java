@@ -7,17 +7,18 @@ public class Main {
     public static void main(String[] args) {
         System.out.println (myPower(2,2));
         System.out.println (myPower(3,3));
+        System.out.println (myPower(2,10));
         Bag bag = new Bag(100);
         initItem();
         bag.pack(list);
     }
 
     private static void initItem() {
-        Item item1 = new Item("1",15);
-        Item item2 = new Item("2",101);
-        Item item3 = new Item("3",30);
-        Item item4 = new Item("4",50);
-        Item item5 = new Item("5",5);
+        Item item1 = new Item("1",15,10);
+        Item item2 = new Item("2",101,5);
+        Item item3 = new Item("3",30,20);
+        Item item4 = new Item("4",50,4);
+        Item item5 = new Item("5",5,3);
         list = new ArrayList<> ();
         list.add (item1);
         list.add (item2);

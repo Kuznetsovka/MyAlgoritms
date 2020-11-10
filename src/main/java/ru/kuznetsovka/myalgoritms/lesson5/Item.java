@@ -3,10 +3,16 @@ package ru.kuznetsovka.myalgoritms.lesson5;
 public class Item implements Comparable<Item>{
     private int weight;
     private String name;
+    private int cost;
 
-    public Item(String name,int weight) {
+    public int getCost() {
+        return cost;
+    }
+
+    public Item(String name, int weight, int cost) {
         this.weight = weight;
         this.name = name;
+        this.cost = cost;
     }
 
     public int getWeight() {
@@ -33,6 +39,7 @@ public class Item implements Comparable<Item>{
     public String toString() {
         return "Item{" +
                 "weight=" + weight +
+                "cost=" + cost +
                 ", name='" + name + '\'' +
                 '}';
     }
