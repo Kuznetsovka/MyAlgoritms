@@ -19,12 +19,16 @@ public class Main {
         Item item3 = new Item("3",30,20);
         Item item4 = new Item("4",50,4);
         Item item5 = new Item("5",5,3);
+        Item item6 = new Item("6",15,1);
+        Item item7 = new Item("7",30,3);
         list = new ArrayList<> ();
         list.add (item1);
         list.add (item2);
         list.add (item3);
         list.add (item4);
         list.add (item5);
+        list.add (item6);
+        list.add (item7);
     }
 
     private static int myPower(int number, int pow) {
