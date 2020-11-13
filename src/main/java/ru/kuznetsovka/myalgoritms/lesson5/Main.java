@@ -31,12 +31,18 @@ public class Main {
         list.add (item7);
     }
 
-    private static int myPower(int number, int pow) {
-        if (pow==1)
+    private static double myPower(double number, int pow) {
+        if (number == 0)
+            if (pow > 0)
+                return 0;
+            else
+                throw new IllegalArgumentException("Invalid pow " + pow + " for number = 0");
+        if (pow==1) {
             return number;
-        return number*myPower(number, pow-1);
+        } else if (pow > 0) {
+            return number*myPower(number, pow-1);
+        } else {
+            return 1 / (number*myPower(number, pow-1));
+        }
     }
-
-    //В общем виде задачу можно сформулировать так: из заданного множества предметов со свойствами «стоимость» и «вес»
-    // требуется отобрать подмножество с максимальной полной стоимостью, соблюдая при этом ограничение на суммарный вес.
 }
