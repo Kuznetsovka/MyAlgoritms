@@ -50,11 +50,10 @@ public class Node<T extends Comparable<? super T>> {
         }
         if (isRightChild(child.getValue())) {
             setRightChild(child);
-            child.level = level+1;
         } else {
             setLeftChild(child);
-            child.level = level+1;
         }
+        child.setLevel (level+1);
     }
 
     public boolean isRightChild(T value) {
