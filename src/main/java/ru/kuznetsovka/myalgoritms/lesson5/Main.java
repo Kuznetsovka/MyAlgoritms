@@ -42,7 +42,7 @@ public class Main {
         } else if (pow > 0) {
             return number*myPower(number, pow-1);
         } else {
-            return 1 / (number*myPower(number, pow-1));
+            return 1 / (number*myPower(number, -pow-1));
         }
     }
 }
